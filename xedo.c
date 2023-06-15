@@ -1,5 +1,5 @@
 
-/* Copyright 2021 Jon Dybeck
+/* Copyright 2021,2023 Jon Dybeck
  * Distributed under the MIT license. */
 
 #include <stdio.h>
@@ -43,19 +43,19 @@ static void main_send(void) {
 
   XSetWindowAttributes attr;
   attr.event_mask = KeyPressMask | KeyReleaseMask | KeymapStateMask | StructureNotifyMask;
-	attr.background_pixel = WhitePixel(display, screen);
-	attr.border_pixel = BlackPixel(display, screen);
+  attr.background_pixel = WhitePixel(display, screen);
+  attr.border_pixel = BlackPixel(display, screen);
 
-	unsigned long mask = CWBackPixel | CWBorderPixel | CWEventMask;
+  unsigned long mask = CWBackPixel | CWBorderPixel | CWEventMask;
 
   unsigned borderwidth = 1;
 
   Window window = XCreateWindow (display, RootWindow (display, screen), hints.x, hints.y,
-			   hints.width, hints.height, borderwidth, 0,
-			   InputOutput, (Visual *)CopyFromParent,
-			   mask, &attr);
+         hints.width, hints.height, borderwidth, 0,
+         InputOutput, (Visual *)CopyFromParent,
+         mask, &attr);
 
-	XMapWindow (display, window);
+  XMapWindow (display, window);
 
   unsigned int done = 0;
   while (!done) {

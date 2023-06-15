@@ -16,6 +16,7 @@ static void handle_KeyPress (XEvent *eventp) {
   KeySym keysym;
   KeyCode keycode = keyeventp->keycode;
   fprintf(stderr, "KeyPress   keycode %u\n", keycode);
+  printf("1 %u\n", keycode);
 }
 
 static void handle_KeyRelease (XEvent *eventp) {
@@ -23,6 +24,7 @@ static void handle_KeyRelease (XEvent *eventp) {
   KeySym keysym;
   KeyCode keycode = keyeventp->keycode;
   fprintf(stderr, "KeyRelease keycode %u\n", keycode);
+  printf("0 %u\n", keycode);
 }
 
 static void main_send(void) {
@@ -103,15 +105,15 @@ static void main_recv(void) {
   int screen = DefaultScreen(display);
 
   unsigned int done = 0;
-  while (!done) {
-    KeyCode keycode = 40; /* TODO Read keycode. */
+  while (!feof(stdin) && !ferror(stdin) && !done) {
+    KeyCode keycode = 40;
     int is_press = 1;
-    int type = KeyPress;
 
-    unsigned u;
-
-    scanf("%u", &u);
-    keycode = u;
+    int r = scanf("%i %hhu", &is_press, &keycode);
+    if (r != 2) {
+      fputs("failed to scan inputs.", stderr);
+      break;
+    }
 
     XTestFakeKeyEvent(display, keycode, is_press, CurrentTime);
     XSync(display, False);
